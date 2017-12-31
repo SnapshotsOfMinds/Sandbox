@@ -14,7 +14,7 @@ public class SyntaxChecker {
             while (testCases-- > 0) {
                 String pattern = sc.nextLine();
                 try {
-                    Pattern p = Pattern.compile(pattern);
+                    Pattern.compile(pattern);
                     System.out.println("Valid");
                 } catch (PatternSyntaxException e) {
                     System.out.println("Invalid");
