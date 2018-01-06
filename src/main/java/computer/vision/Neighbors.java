@@ -82,7 +82,7 @@ public class Neighbors {
     /**
      * Constructor to run the algorithm two times.
      */
-    public Neighbors() {
+    private Neighbors() {
         runAlgorithm(inputOne);
         runAlgorithm(inputTwo);
     }
@@ -92,7 +92,7 @@ public class Neighbors {
      *
      * @param input the current input array
      */
-    public void runAlgorithm(int[][] input) {
+    private void runAlgorithm(int[][] input) {
         int[] parent = new int[30];
         int currentLabel = 1;
         int[][] output = new int[input.length][input[0].length];
@@ -176,7 +176,7 @@ public class Neighbors {
      * @param neighbors the list of neighbors for that point
      * @return the minimum
      */
-    public int min(List<Integer> neighbors) {
+    private int min(List<Integer> neighbors) {
         int currentMin = 0;
         for (Integer neighbor : neighbors) {
             if (neighbor < currentMin || currentMin == 0) {
@@ -194,8 +194,8 @@ public class Neighbors {
      * @param output The output array to check
      * @return The list containing the nearest neighbors
      */
-    public ArrayList<Integer> priorNeighbors(int row, int col, int[][] output) {
-        ArrayList<Integer> nearestNeighbors = new ArrayList<Integer>();
+    private ArrayList<Integer> priorNeighbors(int row, int col, int[][] output) {
+        ArrayList<Integer> nearestNeighbors = new ArrayList<>();
 
         //Point (0,0) and the top most row
         if (row == 0) {
@@ -253,7 +253,7 @@ public class Neighbors {
      * @param parent The parent array
      * @return the root
      */
-    public int findRoot(int x, int[] parent) {
+    private int findRoot(int x, int[] parent) {
         int j = x;
         while (parent[j] != 0) {
             j = parent[j];
@@ -268,7 +268,7 @@ public class Neighbors {
      * @param y The root to be compared
      * @param parent The parent array
      */
-    public void union(int x, int y, int[] parent) {
+    private void union(int x, int y, int[] parent) {
         int j = findRoot(x, parent);
         int k = findRoot(y, parent);
         if (j != k) {

@@ -1,34 +1,21 @@
 package computer.vision;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Author:     Christopher Bowen
- * Date:       07 October 2013
- * Course:     Computer Vision
- * File:       Transform.java
- * Purpose:
- * Known Bugs: None
- * IDE:        Eclipse
- * Special Instructions:
- * None
- * E-mail:     bowenc65@students.rowan.edu
+ * THIS PROJECT CANNOT RUN. The required raw image files are missing.
  */
 public class Transform {
-
     // This program implements the basic morphological operations
-    static final int SIZE = 140;
-    static byte[][] input = new byte[SIZE][SIZE];
-    static byte[][] output = new byte[SIZE][SIZE];
-    static byte[][] tempImage = new byte[SIZE][SIZE];
-    static ArrayList<byte[][]> skeletonSets = new ArrayList<>();
+    private static final int SIZE = 140;
+    private static byte[][] input = new byte[SIZE][SIZE];
+    private static byte[][] tempImage = new byte[SIZE][SIZE];
+    private static ArrayList<byte[][]> skeletonSets = new ArrayList<>();
 
-    static FileInputStream in;
-    static String directoryPath = "C:\\Users\\bowenc65\\Desktop\\CVMorph\\";
+    private static String directoryPath = "C:\\Users\\bowenc65\\Desktop\\CVMorph\\";
 
     public static void main(String[] args) {
         read(input);
@@ -38,7 +25,7 @@ public class Transform {
         }
         byte[][] skeletons = union(skeletonSets);
         display(skeletons, "skeletonSet.raw");
-        output = skeletonSets.get(max);
+        byte[][] output = skeletonSets.get(max);
         for (int i = max; i >= 0; i--) {
             dilation(output, tempImage);
             tempImage = union(tempImage, skeletonSets.get(i));
@@ -52,7 +39,7 @@ public class Transform {
     }
 
     // Set all elements to zero
-    public static void clear(byte[][] f) {
+    private static void clear(byte[][] f) {
         int i, j;
         for (i = 0; i < SIZE; i++) {
             for (j = 0; j < SIZE; j++) {
@@ -62,7 +49,7 @@ public class Transform {
     }
 
     //Union a byte[][] with 1
-    public static byte[][] union(ArrayList<byte[][]> skeletons) {
+    private static byte[][] union(ArrayList<byte[][]> skeletons) {
         byte[][] result = new byte[SIZE][SIZE];
         for (byte[][] b : skeletons) {
             for (int i = 0; i < SIZE - 1; i++) {
@@ -77,7 +64,7 @@ public class Transform {
     }
 
     //Union two byte[][]s
-    public static byte[][] union(byte[][] f, byte[][] g) {
+    private static byte[][] union(byte[][] f, byte[][] g) {
         byte[][] result = new byte[SIZE][SIZE];
         for (int i = 0; i < SIZE - 1; i++) {
             for (int j = 0; j < SIZE - 1; j++) {
@@ -90,7 +77,7 @@ public class Transform {
     }
 
     //Find the maximum disc
-    public static int findMaxDisc() {
+    private static int findMaxDisc() {
         int result = 0;
         while (!isZero(input)) {
             read(input);
@@ -105,7 +92,7 @@ public class Transform {
     }
 
     //Opening operation
-    public static byte[][] opening(int index) {
+    private static byte[][] opening(int index) {
         byte[][] result = new byte[SIZE][SIZE];
         read(input);
         byte[][] erodedSubset;
@@ -124,7 +111,7 @@ public class Transform {
     }
 
     //Check if the byte[][] is zero
-    public static boolean isZero(byte[][] f) {
+    private static boolean isZero(byte[][] f) {
         for (int i = 0; i < SIZE - 1; i++) {
             for (int j = 0; j < SIZE - 1; j++) {
                 if (f[i][j] == 1) {
@@ -136,7 +123,7 @@ public class Transform {
     }
 
     //Perform set difference on two byte[][]s
-    public static byte[][] setDifference(byte[][] f, byte[][] g) {
+    private static byte[][] setDifference(byte[][] f, byte[][] g) {
         byte[][] result = new byte[SIZE][SIZE];
         for (int i = 0; i < SIZE - 1; i++) {
             for (int j = 0; j < SIZE - 1; j++) {
@@ -152,55 +139,46 @@ public class Transform {
     }
 
     // Read from a raw image file
-    public static void read(byte[][] f) {
-        try {
-            in = new FileInputStream(directoryPath + "p1.raw");
-        } catch (FileNotFoundException e) {
-            System.out.println(e + "\nInput file not found.");
-        }
-        byte[] b = new byte[1];
-        int i, j;
-        for (i = 0; i < SIZE - 1; i++) {
-            for (j = 0; j < SIZE - 1; j++) {
-                try {
-                    in.read(b);
-                } catch (IOException e) {
-                    System.out.println("IOException in read method: " + e);
-                }
-                if (b[0] != 0) {
-                    f[i][j] = 0;
-                } else {
-                    f[i][j] = 1;
+    private static void read(byte[][] f) {
+        try (FileInputStream in = new FileInputStream(directoryPath + "p1.raw")) {
+            byte[] b = new byte[1];
+            int i, j;
+            for (i = 0; i < SIZE - 1; i++) {
+                for (j = 0; j < SIZE - 1; j++) {
+                    if (in.read(b) == -1) {
+                        throw new IOException("Unable to read the bytes for the array.");
+                    }
+                    if (b[0] != 0) {
+                        f[i][j] = 0;
+                    } else {
+                        f[i][j] = 1;
+                    }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     // Write to a raw image file
-    public static void display(byte[][] f, String filename) {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(directoryPath + filename + ".raw");
-        } catch (FileNotFoundException e) {
-            System.out.println(e + "\nOutput file not found.");
-        }
-        int i, j;
-        for (i = 0; i < SIZE - 1; i++) {
-            for (j = 0; j < SIZE - 1; j++) {
-                try {
+    private static void display(byte[][] f, String filename) {
+        try (FileOutputStream out = new FileOutputStream(directoryPath + filename + ".raw")) {
+            int i, j;
+            for (i = 0; i < SIZE - 1; i++) {
+                for (j = 0; j < SIZE - 1; j++) {
                     if (f[i][j] != 0) {
                         out.write(0);
                     } else {
                         out.write(255);
                     }
-                } catch (IOException e) {
-                    System.out.println("IOException in write method: " + e);
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void dilation(byte[][] f, byte[][] g) {
+    private static void dilation(byte[][] f, byte[][] g) {
         // This function performs dilation operation
         int i, j;
         clear(g);
@@ -211,7 +189,7 @@ public class Transform {
         }
     }
 
-    public static void erosion(byte[][] f, byte[][] g) {
+    private static void erosion(byte[][] f, byte[][] g) {
         // This function performs erosion operation
         int i, j;
         clear(g);
