@@ -1,4 +1,6 @@
-package practice;
+package hackerrank.challenges;
+
+import java.util.Scanner;
 
 /**
  * Given a number K, find the smallest Fibonacci number ( other than 1 ) that
@@ -28,30 +30,19 @@ package practice;
  */
 public class FibonacciFactor {
     public static void main(String... args) {
-        // Scanner in = new Scanner(System.in);
-        // int myT = in.nextInt();
-        // StringBuilder sb = new StringBuilder(myT);
-        // for (int i = 0; i < myT; i++) {
-        // sb.append(getFibonacciFactor(in.nextInt()) + "\n");
-        // }
-        // in.close();
-        // System.out.println(sb);
-        // System.out.println(getFibonacciFactor(54833));
-        // System.out.println(getFibonacciFactor(135721));
-        System.out.println(getFibonacciFactor(160));
-//		System.out.println(getFibonacciFactor(922526));
+        try (Scanner sc = new Scanner(System.in)) {
+            int numCases = sc.nextInt();
 
-        // 365435296162 54833
-        // 63245986 135721
+            while (numCases-- > 0) {
+                System.out.println(getFibonacciFactor(sc.nextLong()));
+            }
+        }
     }
 
     /**
      * Get the smallest fibonacci number that shares a factor with n
-     *
-     * @param myK
-     * @return
      */
-    public static String getFibonacciFactor(long value) {
+    private static String getFibonacciFactor(long value) {
         long prev = 1;
         long current = 2;
 
@@ -70,11 +61,7 @@ public class FibonacciFactor {
     }
 
     /**
-     * Is there a common factor between myK and myF
-     *
-     * @param n
-     * @param long
-     * @return
+     * Is there a common factor between value and currentFib
      */
     private static long findCommonFactor(long value, long currentFib) {
         if (value % 2 == 0) {
@@ -83,7 +70,7 @@ public class FibonacciFactor {
         // euclidean algorithm for GCD
         while (currentFib > 0) {
             long temp = currentFib;
-            currentFib = value % currentFib; // % is remainder
+            currentFib = value % currentFib;
             value = temp;
         }
 
