@@ -14,8 +14,8 @@ package practice;
  * return = bsxz
  */
 public class CommonCharacters {
-    static String s1 = "aacdb";
-    static String s2 = "gafd";
+    static String s1 = "aabcad";
+    static String s2 = "abc";
 
     public static void main(String... args) {
         if (s1 == null || s1.length() == 0) {
