@@ -3,6 +3,8 @@ package hackerrank.challenges;
 import java.util.Scanner;
 
 /**
+ * https://www.hackerrank.com/contests/amazon/challenges/fibonacci-factor/problem
+ *
  * Given a number K, find the smallest Fibonacci number ( other than 1 ) that
  * shares a common factor with it. A number is said to be a common factor of two
  * numbers if it exactly divides both of them.
